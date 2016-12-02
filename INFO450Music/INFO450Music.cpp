@@ -10,17 +10,19 @@ using namespace std;
 
 class node
 {
-	char artist[50];
-	char song[50];
+public:	
+	char artist[50];//same as int data
+	char song[50];//same as int data
 	node *next;
-public:
-	node(char artist[50], char song[50]);
-	friend class PLaylist;
+	node(char a[50], char s[50]);
+	friend class PLayList;
+
 };
 node::node(char a[50], char s[50])
 {
-	strcpy_s(artist, a);
-	strcpy_s(song, s);
+	artist[50] = a[50];
+	song[50] = s[50];
+
 	next = NULL;
 }
 
@@ -30,10 +32,10 @@ class PlayList
 	node *tail;
 public:
 	PlayList();
-	void playSong(); // this is similar to show list
-    void deleteSong(); 
+	void playSong(); 
+    int deleteSong(char i); 
 	void skipSong();
-	void display();
+	void display();//same as show list
 };
 PlayList::PlayList()
 {
@@ -81,29 +83,39 @@ void PlayList::playSong()
 		cout << "You have no songs" << endl;
 		return;
 	}
-	cout << "The artist is" << ptr->artist << "Title is" << head->song << endl;
+	cout << "The artist is" << ptr->artist[50] << "Title is" << head->song[50] << endl;
 	ptr = ptr->next;
+	display();
 }
 
 void PlayList::skipSong()
-{
+{//similar to insert after
 	node *ptr;
-	ptr = head;
+	
 	while (ptr != NULL)
 	{
+		{
+			
+			if (tail == ptr->next)
+			{tail = ptr; }
+			node *skip = ptr->next;
+			ptr->next = (ptr->next)->next;
+		}
 		ptr = ptr->next;
 	}
 	// if skip user can enter a number n and the song will skip n amount of songs
+	display();
 }
 
-void PlayList::deleteSong()
+int PlayList::deleteSong(char i)
 {
+	char i;
 	node *ptr = head;
 	if (ptr == NULL)
 	{
 		cout << "list is empty" << endl;
 	}
-	if (head->song == i)
+	if (head->song == "i")
 	{
 		if (head == tail)
 		{
@@ -115,7 +127,22 @@ void PlayList::deleteSong()
 		delete ptr;
 		return 0;
 	}
-	//deletes forever
+	while (ptr != NULL)
+	{
+		if (ptr->next && (ptr->next)->song == "i")
+		{
+			if (tail == ptr->next)
+			{
+				tail = ptr;
+			}
+			node *tbd = ptr->next;
+			ptr->next = (ptr->next)->next;
+			delete tbd;
+			return 0;
+		}
+		ptr = ptr->next;
+	}
+	display();
 }
 
 int main()
